@@ -1,14 +1,22 @@
-# :boat: Voyage
+# Paris Traceroute for Linux
 
-Voyage is the new version of the Paris Traceroute tool that was initially developed in C at Pierre and Marie Curie University, the predecessor to today's Sorbonne University.
+Paris Traceroute for Linux is a fast, configurable route-tracing tool for Linux.
+It is derived from [Voyage](https://github.com/dioptra-io/voyage), the Rust
+implementation of Paris Traceroute developed at Sorbonne University, and carries
+forward that tool's algorithms and output formats.
 
-This version is in Rust, so as to be more easily readable, maintainable, and, since it does not have library dependencies, more portable. It also incorporates numerous improvements with respect to the earlier versions.
+The original Paris Traceroute was initially developed in C at Pierre and Marie
+Curie University, the predecessor to today's Sorbonne University. The Rust
+rewrite (Voyage) was created to be more readable, maintainable, and portable,
+and it incorporates numerous improvements over the earlier versions.
 
-Voyage is being developed and maintained by Sorbonne University's SUMMIT unit under contract with the Dioptra research group at the LIP6 computer science laboratory, a joint Sorbonne/CNRS laboratory. Partial funding comes from a French Ministry of Armed Forces cybersecurity grant, and the work is being conducted in collaboration with Measurement Lab.
+Paris Traceroute for Linux leverages the Diamond Miner algorithm to perform its
+route tracing operations. It supports multiple output formats including Atlas,
+Iris, MetaTrace, and Scamper Warts (binary). The tool is designed to be
+efficient and configurable, allowing users to specify various parameters such as
+TTL range, ports, confidence level, and probing rate.
 
-Voyage leverages the Diamond Miner algorithm to perform its route tracing operations. It supports multiple output formats including Atlas, Iris, MetaTrace, and Scamper Warts (binary). The tool is designed to be efficient and configurable, allowing users to specify various parameters such as TTL range, ports, confidence level, and probing rate.
-
-:warning: This is a research project and is still under development. Use it at your own risk.
+> :warning: This is a research project and is still under development. Use it at your own risk.
 
 ## Table of Contents
 
@@ -23,61 +31,63 @@ Voyage leverages the Diamond Miner algorithm to perform its route tracing operat
 
 ## Prerequisites
 
-Before you can build and run Voyage, you need to have the following dependencies installed:
+Before you can build and run Paris Traceroute for Linux, you need to have the
+following dependencies installed:
 
-- **Rust and Cargo**: You can install Rust and Cargo by following the instructions on the [official Rust website](https://www.rust-lang.org/tools/install).
-- **libpcap**: This library is required for packet capturing. You can install it using your package manager:
+- **Rust and Cargo**: You can install Rust and Cargo by following the
+  instructions on the [official Rust website](https://www.rust-lang.org/tools/install).
+
+- **libpcap**: This library is required for packet capturing. You can install it
+  using your package manager:
 
   - **Ubuntu/Debian**:
-    ```sh
+
+    ```
     sudo apt-get update
     sudo apt-get install libpcap-dev
     ```
 
   - **Fedora**:
-    ```sh
+
+    ```
     sudo dnf install libpcap-devel
     ```
 
-  - **macOS**:
-    ```sh
-    brew install libpcap
-    ```
+  - **Rocky Linux 9**: see [Managing Repositories in Rocky Linux](https://wiki.rockylinux.org/rocky/repo/)
 
-  - **Rocky Linux 9**:
-    [Managing Repositories in Rocky Linux](https://wiki.rockylinux.org/rocky/repo/)
-    ```sh
+    ```
     sudo dnf config-manager --set-enabled crb
-    ```
-
-    ```sh
     sudo dnf install libpcap-devel
     ```
 
 ## Installation
 
 1. **Clone the repository**:
-    ```sh
-    git clone https://github.com/teo-lohrer-su/voyage.git
-    cd voyage
-    ```
+
+   ```
+   git clone https://github.com/Paris-Traceroute/paris-traceroute-linux.git
+   cd paris-traceroute-linux
+   ```
 
 2. **Build the project**:
-    ```sh
-    cargo build --release
-    ```
+
+   ```
+   cargo build --release
+   ```
 
 3. **Run the executable**:
-    ```sh
-    ./target/release/voyage --help
-    ```
+
+   ```
+   ./target/release/paris-traceroute --help
+   ```
 
 ## Usage
 
-Voyage provides a variety of command-line options to configure the traceroute operation. Below are the available options:
+Paris Traceroute for Linux provides a variety of command-line options to
+configure the traceroute operation. Below are the available options:
 
-```sh
-Usage: voyage [OPTIONS] --dst-addr <DST_ADDR>
+```
+Usage: paris-traceroute [OPTIONS] --dst-addr <DST_ADDR>
 
 Options:
   -d, --dst-addr <DST_ADDR>            Destination IP address
@@ -102,53 +112,75 @@ Options:
 
 To run a traceroute to `8.8.8.8` with default settings:
 
-```sh
-./target/release/voyage --dst-addr 8.8.8.8
+```
+./target/release/paris-traceroute --dst-addr 8.8.8.8
 ```
 
 To run a traceroute to `8.8.8.8` with a custom TTL range and output format:
 
-```sh
-./target/release/voyage --dst-addr 8.8.8.8 --min-ttl 5 --max-ttl 20 --output-format flat
+```
+./target/release/paris-traceroute --dst-addr 8.8.8.8 --min-ttl 5 --max-ttl 20 --output-format flat
 ```
 
 To run a traceroute to `8.8.8.8` using UDP protocol and a specific network interface:
 
-```sh
-./target/release/voyage --dst-addr 8.8.8.8 --protocol udp --interface eth0
+```
+./target/release/paris-traceroute --dst-addr 8.8.8.8 --protocol udp --interface eth0
 ```
 
 ## Estimate Successors Option
 
-The `--estimate-successors` option attempts to guess the number of successors of a node based on the number of successors discovered so far and the number of probes sent. This estimation is made using a statistical approach involving Stirling numbers of the second kind. The algorithm calculates the probability of discovering a certain number of interfaces after a given number of probes and uses this to estimate the total number of interfaces.
+The `--estimate-successors` option attempts to guess the number of successors of
+a node based on the number of successors discovered so far and the number of
+probes sent. This estimation is made using a statistical approach involving
+Stirling numbers of the second kind. The algorithm calculates the probability of
+discovering a certain number of interfaces after a given number of probes and
+uses this to estimate the total number of interfaces.
 
 The estimation process involves:
 
-1. **Stirling Ratios**: See [Stirling numbers of the second kind](https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind) and the [stirling_numbers crate](https://docs.rs/stirling_numbers/latest/stirling_numbers/fn.stirling2_ratio_table.html).
+1. **Stirling Ratios**: See [Stirling numbers of the second kind](https://en.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind)
+   and the [stirling_numbers crate](https://docs.rs/stirling_numbers/latest/stirling_numbers/fn.stirling2_ratio_table.html).
 
-2. **Event Probability**: The probability of finding exactly $k$ interfaces after $n$ probes given $K$ total interfaces. This is calculated as:
+2. **Event Probability**: The probability of finding exactly $k$ interfaces after
+   $n$ probes given $K$ total interfaces. This is calculated as:
 
    $$\mathbb{P}[Y_{n, K} = k] = \frac{1}{K^n}\cdot\binom{K}{k}\cdot {n\brace k}\cdot k!$$
 
-   where $\binom{K}{k}$ is the binomial coefficient, and ${n\brace k}$ is the Stirling number of the second kind.
+   where $\binom{K}{k}$ is the binomial coefficient, and ${n\brace k}$ is the
+   Stirling number of the second kind.
 
-3. **Total Interfaces Estimation**: Using the event probability, we can find the most *likely* number of interfaces $K$ given the number of probes $n$ and the number of interfaces discovered so far $k$.
+3. **Total Interfaces Estimation**: Using the event probability, we can find the
+   most *likely* number of interfaces $K$ given the number of probes $n$ and the
+   number of interfaces discovered so far $k$.
 
-This option can help optimize the probing process by reducing the number of probing *rounds*, at the cost of marginally more probes, thus potentially making the traceroute operation more efficient when many load balancers exhibit large numbers of outgoing interfaces.
+This option can help optimize the probing process by reducing the number of
+probing *rounds*, at the cost of marginally more probes, thus potentially making
+the traceroute operation more efficient when many load balancers exhibit large
+numbers of outgoing interfaces.
 
 ## Logging
 
-Voyage uses the `env_logger` crate for logging. You can control the log level by setting the `RUST_LOG` environment variable. For example:
+Paris Traceroute for Linux uses the `env_logger` crate for logging. You can
+control the log level by setting the `RUST_LOG` environment variable. For
+example:
 
-```sh
-RUST_LOG=info ./target/release/voyage --dst-addr 8.8.8.8
+```
+RUST_LOG=info ./target/release/paris-traceroute --dst-addr 8.8.8.8
 ```
 
-The `debug` log level provides detailed information about the probing process, including the number of interfaces discovered, the number of probes sent, the discovered links, *etc.*
+The `debug` log level provides detailed information about the probing process,
+including the number of interfaces discovered, the number of probes sent, the
+discovered links, *etc.*
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request on the [GitHub repository](https://github.com/teo-lohrer-su/voyage).
+Contributions are welcome! Please open an issue or submit a pull request on the
+[GitHub repository](https://github.com/Paris-Traceroute/paris-traceroute-linux).
+
+This project is derived from Voyage. Improvements that are not specific to Paris
+Traceroute for Linux are often good candidates to contribute back upstream to
+[Voyage](https://github.com/dioptra-io/voyage) as well.
 
 ### TODO
 
@@ -159,8 +191,17 @@ Contributions are welcome! Please open an issue or submit a pull request on the 
 
 ## Acknowledgements
 
-We would like to acknowledge the contributions and support from the following:
+Paris Traceroute for Linux is based on **Voyage**, developed and maintained by
+Sorbonne University's SUMMIT unit under contract with the Dioptra research group
+at the LIP6 computer science laboratory, a joint Sorbonne/CNRS laboratory.
+Partial funding for Voyage came from a French Ministry of Armed Forces
+cybersecurity grant, and the work was conducted in collaboration with
+Measurement Lab.
+
+We would also like to acknowledge:
 
 - **Dioptra**: [Dioptra Homepage](https://dioptra.io)
-- **Maxime Mouchet**: For the development of the [pantrace](https://crates.io/crates/pantrace) and [caracat](https://crates.io/crates/caracat) crates.
-- **fast-mda-traceroute**: A Python project that prototyped most of this tool. [fast-mda-traceroute](https://github.com/dioptra-io/fast-mda-traceroute)
+- **Maxime Mouchet**: For the development of the [pantrace](https://crates.io/crates/pantrace)
+  and [caracat](https://crates.io/crates/caracat) crates.
+- **fast-mda-traceroute**: A Python project that prototyped most of this tool.
+  [fast-mda-traceroute](https://github.com/dioptra-io/fast-mda-traceroute)
