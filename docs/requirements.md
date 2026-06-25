@@ -2,7 +2,7 @@
 
 **Requirements Specification Document (RSD)**
 
-**Status:**  In progress
+**Status:**  In progress  
 **Initial version:** 2026-06-11  
 **Author:** Timur Friedman  
 **Reviewed by:**  
