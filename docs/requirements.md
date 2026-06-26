@@ -2,7 +2,7 @@
 
 **Requirements Specification Document (RSD)**
 
-**Status:**  In progress  
+**Status:**  
 **Initial version:** 2026-06-11  
 **Author:** Timur Friedman  
 **Reviewed by:**  
@@ -14,9 +14,10 @@
 | --- | --- | --- | --- |
 | 0.1 | 2026-06-11 | Timur Friedman | Initial draft |
 | 0.2 | 2026-06-15 | Timur Friedman | Revised draft |
-| 0.3 | 2026-06-17 | Timur Friedman | Added [MPTH-07-PR](#MPTH-07-PR) and [MPTH-08-PR](#MPTH-08-PR), and revised the definition of the utility |
+| 0.3 | 2026-06-17 | Timur Friedman | Added [R-MPTH-07](#R-MPTH-07) and [R-MPTH-08](#R-MPTH-08), and revised the definition of the utility |
 | 0.4 | 2026-06-25 | Timur Friedman | Minor corrections |
 | 0.5 | 2026-06-25 | Timur Friedman | Markdown edition |
+| 0.6 | 2026-06-25 | Timur Friedman | Renamed requirement codes to the R-CCCC-NN format |
 
 ## Purpose
 
@@ -64,10 +65,10 @@ Paris Traceroute for Linux will be built by adapting Voyage and its supporting l
 
 No tool available today satisfies all four of the following properties. Paris Traceroute for Linux will satisfy them all. (References are to the requirements specified later in this document.)
 
-- correct tracing of a single path through a load-balanced topology, by holding the flow identifier steady ([SPTH-01-PR](#SPTH-01-PR));
-- multipath tracing with the Multipath Detection Algorithm, carrying explicit statistical guarantees of completeness ([MPTH-02-PR](#MPTH-02-PR));
-- command-line compatibility with Butskoy’s Traceroute for Linux ([COMP-02-PR](#COMP-02-PR));
-- output compatibility with Butskoy’s Traceroute for Linux ([COMP-03-PR](#COMP-03-PR)).
+- correct tracing of a single path through a load-balanced topology, by holding the flow identifier steady ([R-SPTH-01](#R-SPTH-01));
+- multipath tracing with the Multipath Detection Algorithm, carrying explicit statistical guarantees of completeness ([R-MPTH-02](#R-MPTH-02));
+- command-line compatibility with Butskoy’s Traceroute for Linux ([R-COMP-02](#R-COMP-02));
+- output compatibility with Butskoy’s Traceroute for Linux ([R-COMP-03](#R-COMP-03)).
 
 Every one of these properties is found in some existing tool, but no tool has all four at once. (See Table B-4 of Appendix B for a tool-by-tool comparison.)
 
@@ -77,7 +78,7 @@ Traceroute for Linux has command-line and output compatibility by definition, si
 
 This is the gap that Paris Traceroute for Linux is built to fill. To a person at the command line, and to any script or parser, it will look exactly like the standard Linux traceroute. But correct single-path tracing will be the default, and multipath tracing will be available for anyone who asks for it.
 
-The choice of language brings a further advantage. Every traceroute shipped with an operating system today is written in C (see Table B-1 of Appendix B); Paris Traceroute for Linux will be written in Rust ([SOFT-03-PR](#SOFT-03-PR)). A traceroute utility parses packets from untrusted networks, and some of its probing methods need elevated privileges. In C, a bug in that parsing is a possible memory-corruption vulnerability. Rust rules out that entire class of bug. Its built-in concurrency mechanism also suits multipath tracing, which sends far more probe packets in parallel than a classic traceroute does.
+The choice of language brings a further advantage. Every traceroute shipped with an operating system today is written in C (see Table B-1 of Appendix B); Paris Traceroute for Linux will be written in Rust ([R-SOFT-03](#R-SOFT-03)). A traceroute utility parses packets from untrusted networks, and some of its probing methods need elevated privileges. In C, a bug in that parsing is a possible memory-corruption vulnerability. Rust rules out that entire class of bug. Its built-in concurrency mechanism also suits multipath tracing, which sends far more probe packets in parallel than a classic traceroute does.
 
 ## Vocabulary
 
@@ -95,9 +96,9 @@ While the design specification will define which components make up the utility,
 
 ### Requirement Identifiers
 
-Each requirement is identified by a code of the form XXXX-NN-PR or XXXX-NN-NR, where XXXX is a four-letter abbreviation indicating the category of the requirement, such as COMP for "backward compatibility" or MPTH for "multipath tracing", and NN is a two digit number to distinguish the requirement from others in the same category.
+Each requirement is identified by a code of the form R-CCCC-NN, where R marks it as a requirement, CCCC is a four-letter abbreviation indicating the category of the requirement, such as COMP for "backward compatibility" or MPTH for "multipath tracing", and NN is a two digit number to distinguish the requirement from others in the same category.
 
-This document distinguishes between positive requirements and negative requirements. Negative requirements are used to make it clear that some feature that one might think would be required is, in fact, not required. Positive requirements are identified by PR and negative requirements by NR.
+Some requirements are stated to make clear that a feature one might expect is, in fact, not required; their statements read "IS NOT REQUIRED" or "ARE NOT REQUIRED".
 
 ### Requirement Keywords
 
@@ -113,94 +114,94 @@ The table below indexes the requirements by category, giving the code and name o
 
 | Category | Code & link | Name |
 | --- | --- | --- |
-| Deliverables | [DELV-01-PR](#DELV-01-PR) | Command-line utility |
-| Deliverables | [DELV-02-PR](#DELV-02-PR) | Man page |
-| Deliverables | [DELV-03-PR](#DELV-03-PR) | Source release |
-| Deliverables | [DELV-04-PR](#DELV-04-PR) | Compatibility test suite |
-| Deliverables | [DELV-05-NR](#DELV-05-NR) | No graphical interface |
-| Naming | [NAME-01-PR](#NAME-01-PR) | Tool name |
-| Software | [SOFT-01-PR](#SOFT-01-PR) | Software hosting |
-| Software | [SOFT-02-PR](#SOFT-02-PR) | Software licensing |
-| Software | [SOFT-03-PR](#SOFT-03-PR) | Implementation language |
-| Software | [SOFT-04-PR](#SOFT-04-PR) | Legacy repositories |
-| Backward Compatibility | [COMP-01-PR](#COMP-01-PR) | Reference implementation |
-| Backward Compatibility | [COMP-02-PR](#COMP-02-PR) | Command-line compatibility |
-| Backward Compatibility | [COMP-03-PR](#COMP-03-PR) | Output compatibility |
-| Backward Compatibility | [COMP-04-PR](#COMP-04-PR) | Calling-system compatibility |
-| Backward Compatibility | [COMP-05-PR](#COMP-05-PR) | Companion commands |
-| Backward Compatibility | [COMP-06-PR](#COMP-06-PR) | Privilege parity |
-| Backward Compatibility | [COMP-07-NR](#COMP-07-NR) | No wire-level replication |
-| Single-Path Tracing Under Load Balancing | [SPTH-01-PR](#SPTH-01-PR) | Steady flow identifier in classic mode |
-| Single-Path Tracing Under Load Balancing | [SPTH-02-PR](#SPTH-02-PR) | Selectable flow identifier |
-| Single-Path Tracing Under Load Balancing | [SPTH-03-PR](#SPTH-03-PR) | Single path with multipath alert |
-| Multipath Tracing | [MPTH-01-PR](#MPTH-01-PR) | Multipath tracing mode |
-| Multipath Tracing | [MPTH-02-PR](#MPTH-02-PR) | MDA-based path enumeration |
-| Multipath Tracing | [MPTH-03-PR](#MPTH-03-PR) | Idiomatic command-line extension |
-| Multipath Tracing | [MPTH-04-PR](#MPTH-04-PR) | Idiomatic output extension |
-| Multipath Tracing | [MPTH-05-PR](#MPTH-05-PR) | Probing method parity |
-| Multipath Tracing | [MPTH-06-NR](#MPTH-06-NR) | No parser guarantee for multipath output |
-| Multipath Tracing | [MPTH-07-PR](#MPTH-07-PR) | Choice of multipath algorithm |
-| Multipath Tracing | [MPTH-08-PR](#MPTH-08-PR) | Multipath with per-destination load balancing alert |
-| Output Formats | [OFMT-01-PR](#OFMT-01-PR) | Machine-readable output |
-| Packaging & Distribution | [PACK-01-PR](#PACK-01-PR) | Source tarball |
-| Packaging & Distribution | [PACK-02-PR](#PACK-02-PR) | Standard package contents |
-| Packaging & Distribution | [PACK-03-PR](#PACK-03-PR) | Binary packages |
-| Packaging & Distribution | [PACK-04-PR](#PACK-04-PR) | Distribution repositories |
-| Packaging & Distribution | [PACK-05-PR](#PACK-05-PR) | Drop-in installability |
-| Packaging & Distribution | [PACK-06-NR](#PACK-06-NR) | No repository acceptance guarantee |
-| Packaging & Distribution | [PACK-07-PR](#PACK-07-PR) | Minimal dependency footprint |
-| Packaging & Distribution | [PACK-08-NR](#PACK-08-NR) | No packaging beyond Linux |
-| Future Proofing | [FPRO-01-PR](#FPRO-01-PR) | Allow future features |
+| Deliverables | [R-DELV-01](#R-DELV-01) | Command-line utility |
+| Deliverables | [R-DELV-02](#R-DELV-02) | Man page |
+| Deliverables | [R-DELV-03](#R-DELV-03) | Source release |
+| Deliverables | [R-DELV-04](#R-DELV-04) | Compatibility test suite |
+| Deliverables | [R-DELV-05](#R-DELV-05) | No graphical interface |
+| Naming | [R-NAME-01](#R-NAME-01) | Tool name |
+| Software | [R-SOFT-01](#R-SOFT-01) | Software hosting |
+| Software | [R-SOFT-02](#R-SOFT-02) | Software licensing |
+| Software | [R-SOFT-03](#R-SOFT-03) | Implementation language |
+| Software | [R-SOFT-04](#R-SOFT-04) | Legacy repositories |
+| Backward Compatibility | [R-COMP-01](#R-COMP-01) | Reference implementation |
+| Backward Compatibility | [R-COMP-02](#R-COMP-02) | Command-line compatibility |
+| Backward Compatibility | [R-COMP-03](#R-COMP-03) | Output compatibility |
+| Backward Compatibility | [R-COMP-04](#R-COMP-04) | Calling-system compatibility |
+| Backward Compatibility | [R-COMP-05](#R-COMP-05) | Companion commands |
+| Backward Compatibility | [R-COMP-06](#R-COMP-06) | Privilege parity |
+| Backward Compatibility | [R-COMP-07](#R-COMP-07) | No wire-level replication |
+| Single-Path Tracing Under Load Balancing | [R-SPTH-01](#R-SPTH-01) | Steady flow identifier in classic mode |
+| Single-Path Tracing Under Load Balancing | [R-SPTH-02](#R-SPTH-02) | Selectable flow identifier |
+| Single-Path Tracing Under Load Balancing | [R-SPTH-03](#R-SPTH-03) | Single path with multipath alert |
+| Multipath Tracing | [R-MPTH-01](#R-MPTH-01) | Multipath tracing mode |
+| Multipath Tracing | [R-MPTH-02](#R-MPTH-02) | MDA-based path enumeration |
+| Multipath Tracing | [R-MPTH-03](#R-MPTH-03) | Idiomatic command-line extension |
+| Multipath Tracing | [R-MPTH-04](#R-MPTH-04) | Idiomatic output extension |
+| Multipath Tracing | [R-MPTH-05](#R-MPTH-05) | Probing method parity |
+| Multipath Tracing | [R-MPTH-06](#R-MPTH-06) | No parser guarantee for multipath output |
+| Multipath Tracing | [R-MPTH-07](#R-MPTH-07) | Choice of multipath algorithm |
+| Multipath Tracing | [R-MPTH-08](#R-MPTH-08) | Multipath with per-destination load balancing alert |
+| Output Formats | [R-OFMT-01](#R-OFMT-01) | Machine-readable output |
+| Packaging & Distribution | [R-PACK-01](#R-PACK-01) | Source tarball |
+| Packaging & Distribution | [R-PACK-02](#R-PACK-02) | Standard package contents |
+| Packaging & Distribution | [R-PACK-03](#R-PACK-03) | Binary packages |
+| Packaging & Distribution | [R-PACK-04](#R-PACK-04) | Distribution repositories |
+| Packaging & Distribution | [R-PACK-05](#R-PACK-05) | Drop-in installability |
+| Packaging & Distribution | [R-PACK-06](#R-PACK-06) | No repository acceptance guarantee |
+| Packaging & Distribution | [R-PACK-07](#R-PACK-07) | Minimal dependency footprint |
+| Packaging & Distribution | [R-PACK-08](#R-PACK-08) | No packaging beyond Linux |
+| Future Proofing | [R-FPRO-01](#R-FPRO-01) | Allow future features |
 
 ### Deliverables
 
 This section describes the deliverables: the work product that is expected as a result of the development of the utility. It consists of: the command-line utility itself, its man page, a source release from which the package can be built, and an automated compatibility test suite. The sections that follow this one will detail the requirements for these deliverables.
 
-<a id="DELV-01-PR"></a>
+<a id="R-DELV-01"></a>
 
-#### DELV-01-PR — Command-line utility
+#### R-DELV-01 — Command-line utility
 
 > A command-line utility MUST be provided that runs on Linux.
 
-Linux is the utility’s only platform in this version, just as it is the platform of every compatibility guarantee in this document. The restriction is deliberate, and the name of the utility declares it ([NAME-01-PR](#NAME-01-PR)). The case this document makes is a Linux case: the vacancy in the distributions, the drop-in role of [PACK-05-PR](#PACK-05-PR), and the compatibilities of the COMP category all point to Linux, and a Linux release is where the utility will have its impact.
+Linux is the utility’s only platform in this version, just as it is the platform of every compatibility guarantee in this document. The restriction is deliberate, and the name of the utility declares it ([R-NAME-01](#R-NAME-01)). The case this document makes is a Linux case: the vacancy in the distributions, the drop-in role of [R-PACK-05](#R-PACK-05), and the compatibilities of the COMP category all point to Linux, and a Linux release is where the utility will have its impact.
 
 Ports to the other operating systems are expected to follow in future versions: the BSDs and macOS share the Unix socket model, and the precedents of scamper and Trippy show the ports to be tractable, while Windows, with its raw-socket restrictions and its dependency on the Npcap driver, is a larger undertaking.
 
-These ports belong to the catalog of desired features that the Scope section places out of scope; [FPRO-01-PR](#FPRO-01-PR) requires that nothing in the design preclude them, and the implementation basis is itself portable, building wherever the Rust toolchain and libpcap are available. Packaging for the other operating systems is correspondingly not required ([PACK-08-NR](#PACK-08-NR)).
+These ports belong to the catalog of desired features that the Scope section places out of scope; [R-FPRO-01](#R-FPRO-01) requires that nothing in the design preclude them, and the implementation basis is itself portable, building wherever the Rust toolchain and libpcap are available. Packaging for the other operating systems is correspondingly not required ([R-PACK-08](#R-PACK-08)).
 
-<a id="DELV-02-PR"></a>
+<a id="R-DELV-02"></a>
 
-#### DELV-02-PR — Man page
+#### R-DELV-02 — Man page
 
 > A man page for the utility MUST be provided. It MUST document the classic options and the multipath options together, presenting the multipath options in the same style as the rest.
 
 The man page is to be installed in section 8 of the manual, as traceroute(8) is, and is to follow the structure and conventions of the reference implementation's man page: name, synopsis, description, a description of every option, and examples. Documenting the classic and multipath options together, in a uniform style, ensures that the man page reads as the documentation of a single coherent tool rather than of a tool with a bolted-on extra.
 
-<a id="DELV-03-PR"></a>
+<a id="R-DELV-03"></a>
 
-#### DELV-03-PR — Source release
+#### R-DELV-03 — Source release
 
 > A buildable source release of the utility MUST be provided.
 
-The requirements on the form and contents of the source release are detailed under Packaging & Distribution, in particular [PACK-01-PR](#PACK-01-PR) and [PACK-02-PR](#PACK-02-PR).
+The requirements on the form and contents of the source release are detailed under Packaging & Distribution, in particular [R-PACK-01](#R-PACK-01) and [R-PACK-02](#R-PACK-02).
 
-<a id="DELV-04-PR"></a>
+<a id="R-DELV-04"></a>
 
-#### DELV-04-PR — Compatibility test suite
+#### R-DELV-04 — Compatibility test suite
 
 > An automated test suite that verifies the utility’s backward compatibility with the reference implementation MUST be provided.
 
-[COMP-04-PR](#COMP-04-PR) makes substitution the acceptance criterion for backward compatibility; the test suite is the instrument by which that criterion is applied.
+[R-COMP-04](#R-COMP-04) makes substitution the acceptance criterion for backward compatibility; the test suite is the instrument by which that criterion is applied.
 
 It is to run a corpus of invocations against both the reference implementation and the utility, and to verify that the outputs are structurally equivalent; that is, that a parser written against the reference implementation’s output extracts the same fields, with the same meanings, from both.
 
-The composition of the corpus, which should include the representative calling systems of [COMP-04-PR](#COMP-04-PR), is left to the functional specification. The corpus should also exercise the ancillary features that shape the reference implementation’s output and that are absent from the implementation basis as it stands: name resolution of returned addresses, AS path lookups (-A), and the display of ICMP extensions (-e), since these are part of the output interface that [COMP-03-PR](#COMP-03-PR) protects.
+The composition of the corpus, which should include the representative calling systems of [R-COMP-04](#R-COMP-04), is left to the functional specification. The corpus should also exercise the ancillary features that shape the reference implementation’s output and that are absent from the implementation basis as it stands: name resolution of returned addresses, AS path lookups (-A), and the display of ICMP extensions (-e), since these are part of the output interface that [R-COMP-03](#R-COMP-03) protects.
 
-The test suite is to be maintained and distributed with the source (see [PACK-02-PR](#PACK-02-PR)).
+The test suite is to be maintained and distributed with the source (see [R-PACK-02](#R-PACK-02)).
 
-<a id="DELV-05-NR"></a>
+<a id="R-DELV-05"></a>
 
-#### DELV-05-NR — No graphical interface
+#### R-DELV-05 — No graphical interface
 
 > A graphical user interface IS NOT REQUIRED to be provided.
 
@@ -208,29 +209,29 @@ The utility is a command-line utility, as traceroute is. Graphical front-ends, w
 
 ### Naming
 
-<a id="NAME-01-PR"></a>
+<a id="R-NAME-01"></a>
 
-#### NAME-01-PR — Tool name
+#### R-NAME-01 — Tool name
 
 > The utility MUST be named Paris Traceroute for Linux.
 
 The name attaches the utility to two lineages at once.
 
-Paris Traceroute attaches it to the research lineage from which it descends: Paris Traceroute is the name under which the steady flow identifier correction of [SPTH-01-PR](#SPTH-01-PR) was introduced &#91;[Augustin et al., 2006](#ref-augustin-2006)&#93;, and the name carries two decades of recognition in the network measurement and operations communities; recognition that a new name would forfeit.
+Paris Traceroute attaches it to the research lineage from which it descends: Paris Traceroute is the name under which the steady flow identifier correction of [R-SPTH-01](#R-SPTH-01) was introduced &#91;[Augustin et al., 2006](#ref-augustin-2006)&#93;, and the name carries two decades of recognition in the network measurement and operations communities; recognition that a new name would forfeit.
 
-And “for Linux” deliberately echoes the name of the reference implementation, Traceroute for Linux ([COMP-01-PR](#COMP-01-PR)): the suffix conveys the compatibility promise and the platform on which that promise is kept.
+And “for Linux” deliberately echoes the name of the reference implementation, Traceroute for Linux ([R-COMP-01](#R-COMP-01)): the suffix conveys the compatibility promise and the platform on which that promise is kept.
 
-The earlier implementations bearing the Paris Traceroute name, the original paris-traceroute and the libparistraceroute library that succeeded it, come from the same research effort; the handling of their repositories is treated in [SOFT-04-PR](#SOFT-04-PR).
+The earlier implementations bearing the Paris Traceroute name, the original paris-traceroute and the libparistraceroute library that succeeded it, come from the same research effort; the handling of their repositories is treated in [R-SOFT-04](#R-SOFT-04).
 
 The name presents no conflict in the current distributions: a paris-traceroute package built from the earlier implementation existed in Debian, but it was removed from Debian testing in 2020 and is absent from the current releases, so that name is available to be reclaimed for the package, and reclaiming it is preferable to abandoning it, since whatever recognition the earlier package retains accrues to its successor.
 
-Note that the name of the project need not be the name of the package, which is expected to remain paris-traceroute, nor of the installed command; the question of how the installed command is invoked is treated under [PACK-05-PR](#PACK-05-PR).
+Note that the name of the project need not be the name of the package, which is expected to remain paris-traceroute, nor of the installed command; the question of how the installed command is invoked is treated under [R-PACK-05](#R-PACK-05).
 
 ### Software
 
-<a id="SOFT-01-PR"></a>
+<a id="R-SOFT-01"></a>
 
-#### SOFT-01-PR — Software hosting
+#### R-SOFT-01 — Software hosting
 
 > The software MUST be developed in a public Git repository in the Paris Traceroute organization on GitHub.
 
@@ -242,11 +243,11 @@ Two purposes inform the choice of GitHub. The first is credibility: the reposito
 
 Hosting platforms favored elsewhere in the free-software community, such as Codeberg, SourceForge, or an institutional GitLab, were considered and set aside: whatever their virtues, each would interpose an account-creation step between a user with a bug and the filing of that bug. The repository’s issue tracker is to serve as the project’s public channel for bug reports and feature requests, and the package’s documentation should point to it.
 
-The same purposes argue for an organization named for the utility, rather than a place under the Dioptra group or a personal account. A major tool aspires to outlive any single research group’s roster of projects; an organization bearing the utility’s own name gives the project an institutional face of its own, and gathers in one place the repositories that belong to it: the utility itself, the legacy software of [SOFT-04-PR](#SOFT-04-PR), ancillary tools, and in time the project website.
+The same purposes argue for an organization named for the utility, rather than a place under the Dioptra group or a personal account. A major tool aspires to outlive any single research group’s roster of projects; an organization bearing the utility’s own name gives the project an institutional face of its own, and gathers in one place the repositories that belong to it: the utility itself, the legacy software of [R-SOFT-04](#R-SOFT-04), ancillary tools, and in time the project website.
 
-<a id="SOFT-02-PR"></a>
+<a id="R-SOFT-02"></a>
 
-#### SOFT-02-PR — Software licensing
+#### R-SOFT-02 — Software licensing
 
 > The software MUST be licensed under the GNU General Public License, version 2 or later.
 
@@ -254,55 +255,55 @@ This matches the license of the reference implementation. Matching licenses remo
 
 The implementation basis, which includes Voyage and the caracat and pantrace libraries, is MIT-licensed, and MIT-licensed code may be incorporated into a work distributed under the GPL. However, the consequences of these different licenses need to be thoroughly investigated, and perhaps new licenses for the implementation basis should be considered.
 
-<a id="SOFT-03-PR"></a>
+<a id="R-SOFT-03"></a>
 
-#### SOFT-03-PR — Implementation language
+#### R-SOFT-03 — Implementation language
 
 > The utility’s own code MUST be written in Rust.
 
 This makes explicit a commitment that the choice of implementation basis has already made: Voyage and the caracat and pantrace libraries on which the utility builds are written in Rust, and the utility is to be developed as their extension.
 
-The language addresses a concern that is particular to this tool: it parses untrusted packets arriving from the network and, for some probing methods, runs with elevated privileges (see [COMP-06-PR](#COMP-06-PR)), a scenario in which memory-corruption defects might become security vulnerabilities, and against which Rust’s memory safety is a protection.
+The language addresses a concern that is particular to this tool: it parses untrusted packets arriving from the network and, for some probing methods, runs with elevated privileges (see [R-COMP-06](#R-COMP-06)), a scenario in which memory-corruption defects might become security vulnerabilities, and against which Rust’s memory safety is a protection.
 
-The requirement attaches to the utility’s own code only. It neither extends to the libraries that the utility links, of which libpcap is the foremost (see [PACK-07-PR](#PACK-07-PR)), nor forbids the foreign-function interfaces through which Rust reaches them.
+The requirement attaches to the utility’s own code only. It neither extends to the libraries that the utility links, of which libpcap is the foremost (see [R-PACK-07](#R-PACK-07)), nor forbids the foreign-function interfaces through which Rust reaches them.
 
-The build consequences of Rust are treated under [PACK-01-PR](#PACK-01-PR), and the consequences for acceptance into the distributions under [PACK-04-PR](#PACK-04-PR) and [PACK-07-PR](#PACK-07-PR).
+The build consequences of Rust are treated under [R-PACK-01](#R-PACK-01), and the consequences for acceptance into the distributions under [R-PACK-04](#R-PACK-04) and [R-PACK-07](#R-PACK-07).
 
-<a id="SOFT-04-PR"></a>
+<a id="R-SOFT-04"></a>
 
-#### SOFT-04-PR — Legacy repositories
+#### R-SOFT-04 — Legacy repositories
 
 > The repositories of the libparistraceroute organization on GitHub MUST be incorporated into the Paris Traceroute organization as legacy projects.
 
 The earlier implementations are hosted in the libparistraceroute organization on GitHub: the libparistraceroute C library, whose paris-traceroute command is the most recent earlier implementation; the original implementation, preserved as paris-traceroute-OLD; and fakeroute, a tool that simulates load-balanced topologies for the testing of traceroute-like programs.
 
-Left where they are, these repositories would divide the identity that [NAME-01-PR](#NAME-01-PR) claims: a user searching GitHub for Paris Traceroute would find the older software first, with nothing to say that a successor exists. They are therefore to be transferred into the Paris Traceroute organization, with GitHub redirecting the old addresses to the new, with the two implementations archived as read-only and their READMEs revised to state that the utility of this document is their successor and to direct bug reports to its issue tracker.
+Left where they are, these repositories would divide the identity that [R-NAME-01](#R-NAME-01) claims: a user searching GitHub for Paris Traceroute would find the older software first, with nothing to say that a successor exists. They are therefore to be transferred into the Paris Traceroute organization, with GitHub redirecting the old addresses to the new, with the two implementations archived as read-only and their READMEs revised to state that the utility of this document is their successor and to direct bug reports to its issue tracker.
 
-Their commit and issue histories remain visible, which serves the credibility purpose of [SOFT-01-PR](#SOFT-01-PR): the organization then exhibits twenty years of continuous lineage rather than a tool sprung from nowhere. fakeroute is a different matter: it is not superseded but potentially useful, in particular to the compatibility test suite of [DELV-04-PR](#DELV-04-PR), and if found to be so may continue as a live project of the organization.
+Their commit and issue histories remain visible, which serves the credibility purpose of [R-SOFT-01](#R-SOFT-01): the organization then exhibits twenty years of continuous lineage rather than a tool sprung from nowhere. fakeroute is a different matter: it is not superseded but potentially useful, in particular to the compatibility test suite of [R-DELV-04](#R-DELV-04), and if found to be so may continue as a live project of the organization.
 
 ### Backward Compatibility
 
-Backward compatibility is the central requirement of this project. It is defined at the utility's two interfaces with the outside world: the command line that it accepts, and the output that it produces. It is deliberately not defined at the level of the utility's internals or of the packets that it sends, as the negative requirements below make clear.
+Backward compatibility is the central requirement of this project. It is defined at the utility's two interfaces with the outside world: the command line that it accepts, and the output that it produces. It is deliberately not defined at the level of the utility's internals or of the packets that it sends, as the requirements below make clear.
 
-<a id="COMP-01-PR"></a>
+<a id="R-COMP-01"></a>
 
-#### COMP-01-PR — Reference implementation
+#### R-COMP-01 — Reference implementation
 
 > Backward compatibility MUST be assessed against Traceroute for Linux, version 2.1.6, by Dmitry Butskoy.
 
 This is the traceroute implementation most widely distributed with Linux distributions, having replaced the original Van Jacobson implementation in Debian, Ubuntu, Fedora, RHEL, openSUSE, Arch Linux, Gentoo, and others. Version 2.1.6, released 2024-09-13, is the most recent release at the time of writing. If a newer version of the reference implementation is released during development, the functional specification may designate that newer version as the reference instead.
 
-<a id="COMP-02-PR"></a>
+<a id="R-COMP-02"></a>
 
-#### COMP-02-PR — Command-line compatibility
+#### R-COMP-02 — Command-line compatibility
 
 > The utility MUST accept every command-line option and argument that the reference implementation accepts, with the same syntax and the same semantics, and MUST reject invalid invocations with the same usage errors.
 
 This covers the short and long forms of every option, the positional host and packetlen arguments, option defaults, and the interactions among options (for example, the way that a probing method selected by -I, -T, or -U conditions the meaning of -p). It also covers the utility's response to invalid invocations: an unrecognized option or a malformed argument produces a usage error in the same manner as the reference implementation, so that calling systems that detect failures continue to detect them.
 
-<a id="COMP-03-PR"></a>
+<a id="R-COMP-03"></a>
 
-#### COMP-03-PR — Output compatibility
+#### R-COMP-03 — Output compatibility
 
 > For every invocation that is valid for the reference implementation, the utility MUST produce output that any parser of the reference implementation's output parses with the same result.
 
@@ -310,25 +311,25 @@ By output we mean everything that a calling system can observe of a completed ru
 
 Note that this is a requirement of format, not of values. Two runs of traceroute itself do not produce byte-identical output, since round-trip times vary and routes change. The requirement is that the structure of the output be such that a parser written against the reference implementation extracts the same fields, with the same meanings, from the utility's output.
 
-<a id="COMP-04-PR"></a>
+<a id="R-COMP-04"></a>
 
-#### COMP-04-PR — Calling-system compatibility
+#### R-COMP-04 — Calling-system compatibility
 
 > Any calling system that invokes the reference implementation and parses its output MUST be able to invoke the utility in its place, without modification, and continue to function.
 
-This requirement restates [COMP-02-PR](#COMP-02-PR) and [COMP-03-PR](#COMP-03-PR) from the perspective of the user, and it is the acceptance criterion for backward compatibility: the test of the utility is substitution. The functional specification should define a corpus of representative calling systems (shell scripts, monitoring tools, and libraries that wrap traceroute) against which substitution will be verified.
+This requirement restates [R-COMP-02](#R-COMP-02) and [R-COMP-03](#R-COMP-03) from the perspective of the user, and it is the acceptance criterion for backward compatibility: the test of the utility is substitution. The functional specification should define a corpus of representative calling systems (shell scripts, monitoring tools, and libraries that wrap traceroute) against which substitution will be verified.
 
-<a id="COMP-05-PR"></a>
+<a id="R-COMP-05"></a>
 
-#### COMP-05-PR — Companion commands
+#### R-COMP-05 — Companion commands
 
 > The package MUST provide the same companion commands as the reference implementation's package, each with the same behavior.
 
 The reference implementation is installed not only as the traceroute command but also as traceroute6 and as a tcptraceroute wrapper, each with its man page. A calling system that invokes one of these finds it, with the same behavior, when the utility's package is installed in place of the reference implementation's.
 
-<a id="COMP-06-PR"></a>
+<a id="R-COMP-06"></a>
 
-#### COMP-06-PR — Privilege parity
+#### R-COMP-06 — Privilege parity
 
 > For each probing method, the utility MUST NOT require greater operating system privileges than the reference implementation requires for that method. In multipath mode, tracing with a given probing method SHOULD likewise require no greater privileges than classic tracing with that method; where this cannot be achieved, the multipath mode MAY require the `CAP_NET_RAW` capability, and the man page MUST document that requirement.
 
@@ -338,13 +339,13 @@ A tool that demanded root where the reference implementation does not would fail
 
 Note that this requirement constrains the design more than any other: unprivileged UDP tracing on Linux is achieved through kernel-mediated datagram sockets and the `MSG_ERRQUEUE` mechanism, as in the reference implementation, and is not available to an engine that only constructs raw packets, as the probing engine of the implementation basis does. Classic mode therefore requires support for kernel-socket probing that the basis does not presently provide.
 
-<a id="COMP-07-NR"></a>
+<a id="R-COMP-07"></a>
 
-#### COMP-07-NR — No wire-level replication
+#### R-COMP-07 — No wire-level replication
 
 > The utility IS NOT REQUIRED to reproduce the reference implementation's behavior on the wire.
 
-Backward compatibility is defined at the command-line and output interfaces, not at the packet level. The utility may construct its probe packets differently from the reference implementation. Indeed, the flow identifier control required by [SPTH-01-PR](#SPTH-01-PR) means that in some respects it must. What is required is that the differences not be observable through the interfaces that [COMP-02-PR](#COMP-02-PR) and [COMP-03-PR](#COMP-03-PR) govern.
+Backward compatibility is defined at the command-line and output interfaces, not at the packet level. The utility may construct its probe packets differently from the reference implementation. Indeed, the flow identifier control required by [R-SPTH-01](#R-SPTH-01) means that in some respects it must. What is required is that the differences not be observable through the interfaces that [R-COMP-02](#R-COMP-02) and [R-COMP-03](#R-COMP-03) govern.
 
 ### Single-Path Tracing Under Load Balancing
 
@@ -352,9 +353,9 @@ Multipath tracing presupposes something simpler: that a single path through a lo
 
 The requirements in this category correct this defect: they make the trace of classic mode a true single path, and they give the user the means to choose which of the load-balanced paths that is. They concern the tracing of a single path only; the enumeration of the several paths is the subject of the category that follows.
 
-<a id="SPTH-01-PR"></a>
+<a id="R-SPTH-01"></a>
 
-#### SPTH-01-PR — Steady flow identifier in classic mode
+#### R-SPTH-01 — Steady flow identifier in classic mode
 
 > In classic mode, the utility MUST hold the flow identifier constant across all of the probes of a trace.
 
@@ -362,25 +363,25 @@ Per-flow load balancers assign packets to paths based on the flow identifier. Cl
 
 Holding the flow identifier constant, which is the Paris Traceroute correction, ensures that all of the probes follow a single path and that the reported trace is a true route. The correction is established practice in measurement infrastructure: the traceroute run by the probes of RIPE Atlas applies it through their Paris ID mechanism, and every Atlas result records the Paris ID under which it was traced. In every other respect the trace proceeds exactly as in the reference implementation: by default, three probes per hop.
 
-This changes what the utility puts on the wire relative to the reference implementation, which [COMP-07-NR](#COMP-07-NR) expressly permits, and it is invisible at the output interface, since the output format carries no trace of how flow identifiers were chosen.
+This changes what the utility puts on the wire relative to the reference implementation, which [R-COMP-07](#R-COMP-07) expressly permits, and it is invisible at the output interface, since the output format carries no trace of how flow identifiers were chosen.
 
 How the utility matches replies to its probes without varying the flow identifier (the reference implementation relies on the varying destination port for this) is left to the design specification.
 
-<a id="SPTH-02-PR"></a>
+<a id="R-SPTH-02"></a>
 
-#### SPTH-02-PR — Selectable flow identifier
+#### R-SPTH-02 — Selectable flow identifier
 
-> The utility MUST provide a new command-line option by which the user sets the flow identifier to a value other than the default. The output produced under this option MAY differ from the classic output format of [COMP-03-PR](#COMP-03-PR), but SHOULD adhere to it as closely as possible.
+> The utility MUST provide a new command-line option by which the user sets the flow identifier to a value other than the default. The output produced under this option MAY differ from the classic output format of [R-COMP-03](#R-COMP-03), but SHOULD adhere to it as closely as possible.
 
 With a steady default flow identifier, every run of the utility in classic mode follows the same load-balanced path, so long as the network's configuration holds. This option gives the user manual access to the other paths: successive invocations with different flow identifier values trace different load-balanced paths, one path per run, without invoking the multipath mode.
 
-The form of the option's argument, an opaque integer that the utility maps onto header fields, or something more explicit, is left to the functional specification, and the option is subject to the idiomatic conventions of [MPTH-03-PR](#MPTH-03-PR). The RIPE Atlas Paris ID mechanism is an example of how this might be done.
+The form of the option's argument, an opaque integer that the utility maps onto header fields, or something more explicit, is left to the functional specification, and the option is subject to the idiomatic conventions of [R-MPTH-03](#R-MPTH-03). The RIPE Atlas Paris ID mechanism is an example of how this might be done.
 
 Because a selectable flow identifier is an extension of the reference implementation, its output need not match the classic format exactly; adhering to it as closely as possible lets a parser of classic output parse this output with minimal modifications.
 
-<a id="SPTH-03-PR"></a>
+<a id="R-SPTH-03"></a>
 
-#### SPTH-03-PR — Single path with multipath alert
+#### R-SPTH-03 — Single path with multipath alert
 
 > The utility MUST provide an option of single path probing that alerts to the presence of multiple paths.
 
@@ -388,29 +389,29 @@ When the multipath alert option is selected, the output consists of a single pat
 
 ### Multipath Tracing
 
-The distinguishing new capability of the utility is multipath tracing: the discovery of the multiple load-balanced paths that packets may take between the source and the destination, rather than the single path that classic mode, with the steady flow identifier of [SPTH-01-PR](#SPTH-01-PR), reports.
+The distinguishing new capability of the utility is multipath tracing: the discovery of the multiple load-balanced paths that packets may take between the source and the destination, rather than the single path that classic mode, with the steady flow identifier of [R-SPTH-01](#R-SPTH-01), reports.
 
 The requirements in this category mandate this capability and the manner of its integration, which is to feel to a traceroute user like a natural extension of the familiar tool.
 
-<a id="MPTH-01-PR"></a>
+<a id="R-MPTH-01"></a>
 
-#### MPTH-01-PR — Multipath tracing mode
+#### R-MPTH-01 — Multipath tracing mode
 
 > The utility MUST provide a multipath mode, selected by one or more new command-line options, that discovers the load-balanced paths between the source and the destination.
 
 When no multipath option is given, the utility runs in classic mode, in which the compatibility requirements of the previous section apply in full. The multipath mode is strictly opt-in: its existence must not be observable in classic mode.
 
-<a id="MPTH-02-PR"></a>
+<a id="R-MPTH-02"></a>
 
-#### MPTH-02-PR — MDA-based path enumeration
+#### R-MPTH-02 — MDA-based path enumeration
 
 > The multipath mode MUST enumerate load-balanced paths using the Multipath Detection Algorithm (MDA) and that algorithm’s explicit statistical guarantees on the completeness of its discovery.
 
 The Multipath Detection Algorithm (MDA) sends, at each path divergence point, a sufficient number of probe packets with distinct flow identifiers to bound, at a stated confidence level, the probability that a next-hop interface has gone undiscovered.
 
-<a id="MPTH-03-PR"></a>
+<a id="R-MPTH-03"></a>
 
-#### MPTH-03-PR — Idiomatic command-line extension
+#### R-MPTH-03 — Idiomatic command-line extension
 
 > The multipath options MUST follow the command-line conventions of the reference implementation.
 
@@ -420,9 +421,9 @@ A user who knows traceroute should be able to read the synopsis line of the man 
 
 The specific option letters and names are left to the functional specification.
 
-<a id="MPTH-04-PR"></a>
+<a id="R-MPTH-04"></a>
 
-#### MPTH-04-PR — Idiomatic output extension
+#### R-MPTH-04 — Idiomatic output extension
 
 > The output of the multipath mode MUST read as a natural extension of the classic traceroute output.
 
@@ -432,39 +433,39 @@ A user looking at multipath output should recognize it immediately as traceroute
 
 The precise format is left to the functional specification.
 
-<a id="MPTH-05-PR"></a>
+<a id="R-MPTH-05"></a>
 
-#### MPTH-05-PR — Probing method parity
+#### R-MPTH-05 — Probing method parity
 
 > The multipath mode MUST support the UDP, ICMP, TCP, and DCCP probing methods, for both IPv4 and IPv6, and, in general, every probing method that the reference implementation supports. Where a probing method affords no way to vary the flow identifier, the man page MUST document the resulting limitation.
 
 The reference implementation offers UDP probing in several variants, ICMP ECHO probing, TCP probing, and further methods such as DCCP and generic IP datagrams.
 
-A user of any of these methods should be able to add the multipath option and obtain multipath results, for IPv4 and IPv6 destinations alike. UDP, ICMP, and TCP are the methods in wide use, and TCP support is in any case implied by the tcptraceroute companion command of [COMP-05-PR](#COMP-05-PR); multipath options for these are a must.
+A user of any of these methods should be able to add the multipath option and obtain multipath results, for IPv4 and IPv6 destinations alike. UDP, ICMP, and TCP are the methods in wide use, and TCP support is in any case implied by the tcptraceroute companion command of [R-COMP-05](#R-COMP-05); multipath options for these are a must.
 
 At the time of this writing, the probing engine of the implementation basis supports only UDP and ICMP, so each further method, TCP included, will be a new development.
 
 The methods differ in the degrees of freedom that their headers give for varying the flow identifier: UDP, TCP, and DCCP offer port numbers; ICMP offers fields such as the checksum and the sequence number; generic IP datagrams may offer nothing at all. Where a method gives limited or no ability to vary the flow identifier, multipath mode may not be possible for it.
 
-<a id="MPTH-06-NR"></a>
+<a id="R-MPTH-06"></a>
 
-#### MPTH-06-NR — No parser guarantee for multipath output
+#### R-MPTH-06 — No parser guarantee for multipath output
 
 > Existing parsers of traceroute output ARE NOT REQUIRED to be able to parse the multipath mode's output.
 
-The multipath output is new, and a calling system written against the reference implementation cannot be expected to understand it. The compatibility guarantee of [COMP-03-PR](#COMP-03-PR) and [COMP-04-PR](#COMP-04-PR) applies to invocations that are valid for the reference implementation; an invocation that uses a multipath option is by definition not among them.
+The multipath output is new, and a calling system written against the reference implementation cannot be expected to understand it. The compatibility guarantee of [R-COMP-03](#R-COMP-03) and [R-COMP-04](#R-COMP-04) applies to invocations that are valid for the reference implementation; an invocation that uses a multipath option is by definition not among them.
 
-<a id="MPTH-07-PR"></a>
+<a id="R-MPTH-07"></a>
 
-#### MPTH-07-PR — Choice of multipath algorithm
+#### R-MPTH-07 — Choice of multipath algorithm
 
 > The utility MUST permit a choice among multipath enumeration algorithms, the Multipath Detection Algorithm (MDA) being one of them; the MDA SHOULD be the default.
 
 The Multipath Detection Algorithm (MDA) was the first algorithm to enumerate the concurrent paths through a load balanced routing topology, but there are others, and new ones might be designed, so the utility anticipates a choice among them.
 
-<a id="MPTH-08-PR"></a>
+<a id="R-MPTH-08"></a>
 
-#### MPTH-08-PR — Multipath with per-destination load balancing alert
+#### R-MPTH-08 — Multipath with per-destination load balancing alert
 
 > The utility SHOULD provide an option of multipath probing that alerts to the presence of per-destination load balancing.
 
@@ -472,25 +473,25 @@ When the per-destination alert option is selected, the output consists of a mult
 
 ### Output Formats
 
-<a id="OFMT-01-PR"></a>
+<a id="R-OFMT-01"></a>
 
-#### OFMT-01-PR — Machine-readable output
+#### R-OFMT-01 — Machine-readable output
 
 > Machine-readable output formats SHOULD be provided, selectable by option, alongside the classic text output.
 
-Machine-readable output could have been deferred to a future version (see [FPRO-01-PR](#FPRO-01-PR)); it is instead part of the present set of requirements because the implementation basis provides it at little cost: the pantrace library, on which the basis builds, already converts among the standard traceroute interchange formats (RIPE Atlas, Iris, and Scamper warts, among others), and a JSON rendering serves calling systems that prefer structured data.
+Machine-readable output could have been deferred to a future version (see [R-FPRO-01](#R-FPRO-01)); it is instead part of the present set of requirements because the implementation basis provides it at little cost: the pantrace library, on which the basis builds, already converts among the standard traceroute interchange formats (RIPE Atlas, Iris, and Scamper warts, among others), and a JSON rendering serves calling systems that prefer structured data.
 
 Among these, the RIPE Atlas format merits particular mention: the volume of measurements that the Atlas platform produces has made its JSON format the one in which many researchers expect traceroute data, and offering it makes the utility’s results directly consumable by the analysis pipelines those researchers already operate.
 
-The formats to be offered, and the options by which they are selected, are left to the functional specification. Machine-readable output is strictly opt-in: when it is not requested, the output interface of [COMP-03-PR](#COMP-03-PR) applies unchanged, and existing parsers are unaffected.
+The formats to be offered, and the options by which they are selected, are left to the functional specification. Machine-readable output is strictly opt-in: when it is not requested, the output interface of [R-COMP-03](#R-COMP-03) applies unchanged, and existing parsers are unaffected.
 
 ### Packaging & Distribution
 
 The utility is to be made available in the most classic manner for Linux packages. For a utility of this kind, that manner is well established, and it is the manner in which the reference implementation itself is distributed: a versioned source tarball, released publicly, that builds and installs with the conventional tools, complemented by binary packages for the major package managers and, ultimately, by inclusion in the distributions' own repositories.
 
-<a id="PACK-01-PR"></a>
+<a id="R-PACK-01"></a>
 
-#### PACK-01-PR — Source tarball
+#### R-PACK-01 — Source tarball
 
 > Each release of the utility MUST be published as a versioned source tarball that builds and installs by the conventional procedure. The tarball MUST build without network access, with the sources of all dependencies included. Version numbers SHOULD follow the usual major.minor.patch convention, and the release SHOULD declare a minimum supported version of the Rust toolchain.
 
@@ -500,35 +501,35 @@ The reference implementation distributes itself in exactly this way (traceroute-
 
 Because the implementation basis is in Rust, whose build tool fetches dependency sources from the network by default, the make targets may wrap the cargo build, and building without network access requires the sources of all dependencies to be incorporated into the tarball.
 
-<a id="PACK-02-PR"></a>
+<a id="R-PACK-02"></a>
 
-#### PACK-02-PR — Standard package contents
+#### R-PACK-02 — Standard package contents
 
 > The source release MUST include the components that are typical of a Linux package.
 
-These are: the license text (a COPYING file), a README, a changelog or NEWS file recording what changed in each release, the build files, the man page sources, the compatibility test suite of [DELV-04-PR](#DELV-04-PR), and the sources of the utility itself. Anyone familiar with unpacking Linux source packages should find what they expect to find.
+These are: the license text (a COPYING file), a README, a changelog or NEWS file recording what changed in each release, the build files, the man page sources, the compatibility test suite of [R-DELV-04](#R-DELV-04), and the sources of the utility itself. Anyone familiar with unpacking Linux source packages should find what they expect to find.
 
-<a id="PACK-03-PR"></a>
+<a id="R-PACK-03"></a>
 
-#### PACK-03-PR — Binary packages
+#### R-PACK-03 — Binary packages
 
 > Binary packages in the .deb and .rpm formats SHOULD be provided for each release.
 
 These are the package formats of the Debian and Red Hat families respectively, which between them cover the large majority of Linux installations. Providing them allows installation through the standard package managers without a build step. The packaging metadata (a debian directory, an RPM spec file) should be maintained alongside the source so that the distributions can reuse it.
 
-<a id="PACK-04-PR"></a>
+<a id="R-PACK-04"></a>
 
-#### PACK-04-PR — Distribution repositories
+#### R-PACK-04 — Distribution repositories
 
 > Inclusion of the package in the repositories of the major Linux distributions SHOULD be pursued.
 
 The truly classic channel for a Linux utility is the distribution repository: the way a user obtains the reference implementation is apt install traceroute or dnf install traceroute, from their distribution, not from the project's own site. Acceptance into Debian and Fedora, from which derivative distributions inherit, is the goal.
 
-This is stated as should rather than must because it depends on the decisions of outside parties; see [PACK-06-NR](#PACK-06-NR). Acceptance is also conditioned by the distributions’ policies for packaging Rust software: Debian, for example, builds Rust programs against separately packaged crates rather than vendored sources, so every dependency that is not already packaged is an obstacle. The dependency footprint of the utility therefore bears directly on this requirement; see [PACK-07-PR](#PACK-07-PR).
+This is stated as should rather than must because it depends on the decisions of outside parties; see [R-PACK-06](#R-PACK-06). Acceptance is also conditioned by the distributions’ policies for packaging Rust software: Debian, for example, builds Rust programs against separately packaged crates rather than vendored sources, so every dependency that is not already packaged is an obstacle. The dependency footprint of the utility therefore bears directly on this requirement; see [R-PACK-07](#R-PACK-07).
 
-<a id="PACK-05-PR"></a>
+<a id="R-PACK-05"></a>
 
-#### PACK-05-PR — Drop-in installability
+#### R-PACK-05 — Drop-in installability
 
 > The package MUST allow a system administrator to arrange that invoking traceroute invokes the utility.
 
@@ -540,49 +541,49 @@ Under this mechanism, /usr/bin/traceroute is not a binary but a managed symbolic
 
 Debian already arbitrates between Traceroute for Linux and inetutils-traceroute in this way, and defines a traceroute virtual package so that other packages may depend on the role rather than on an implementation. The utility’s package registers simply as a further candidate.
 
-The companion commands of [COMP-05-PR](#COMP-05-PR), traceroute6 and the tcptraceroute wrapper, are each their own alternative, and the man pages switch together with the binaries.
+The companion commands of [R-COMP-05](#R-COMP-05), traceroute6 and the tcptraceroute wrapper, are each their own alternative, and the man pages switch together with the binaries.
 
 Two limits of the mechanism are accepted. First, the choice is system-wide and is made with administrator privileges; there is no per-user setting, and a user without those privileges can at most shadow the command through their own PATH. Second, the mechanism is not universal: it is standard on the Debian and Red Hat families, which between them cover the large majority of installations, but Arch Linux does not use it and Gentoo has its own eselect. The mechanism chosen for each packaging target is therefore left to the design specification.
 
-<a id="PACK-06-NR"></a>
+<a id="R-PACK-06"></a>
 
-#### PACK-06-NR — No repository acceptance guarantee
+#### R-PACK-06 — No repository acceptance guarantee
 
 > Acceptance of the package into distribution repositories IS NOT REQUIRED for the product to be considered complete.
 
-Whether Debian, Fedora, or any other distribution accepts the package is a decision made by those projects on their own timetables. The product is complete when the tarball and binary packages of [PACK-01-PR](#PACK-01-PR) through [PACK-03-PR](#PACK-03-PR) are published and the submission efforts of [PACK-04-PR](#PACK-04-PR) are underway.
+Whether Debian, Fedora, or any other distribution accepts the package is a decision made by those projects on their own timetables. The product is complete when the tarball and binary packages of [R-PACK-01](#R-PACK-01) through [R-PACK-03](#R-PACK-03) are published and the submission efforts of [R-PACK-04](#R-PACK-04) are underway.
 
-<a id="PACK-07-PR"></a>
+<a id="R-PACK-07"></a>
 
-#### PACK-07-PR — Minimal dependency footprint
+#### R-PACK-07 — Minimal dependency footprint
 
 > The utility’s build-time and run-time dependencies SHOULD be kept to the minimum that the implementation requires.
 
 The reference implementation depends on nothing beyond the C library, which is part of why every distribution carries it. The utility, built on the implementation basis, will depend at run time on libpcap, which every major distribution packages, and at build time on a tree of Rust crates. Run-time dependencies beyond libpcap should be avoided.
 
-Each build-time dependency that is not already packaged in Debian and Fedora is an obstacle to [PACK-04-PR](#PACK-04-PR), and the dependency tree should be reviewed with that cost in mind before it grows.
+Each build-time dependency that is not already packaged in Debian and Fedora is an obstacle to [R-PACK-04](#R-PACK-04), and the dependency tree should be reviewed with that cost in mind before it grows.
 
-<a id="PACK-08-NR"></a>
+<a id="R-PACK-08"></a>
 
-#### PACK-08-NR — No packaging beyond Linux
+#### R-PACK-08 — No packaging beyond Linux
 
 > Packaging and installation channels for operating systems other than Linux ARE NOT REQUIRED for the product to be considered complete; should any such channel be pursued, the work MUST NOT dilute the drop-in role that the package plays on Linux.
 
-The utility described by this document is a Linux tool ([DELV-01-PR](#DELV-01-PR)), and its packaging requirements, [PACK-01-PR](#PACK-01-PR) through [PACK-07-PR](#PACK-07-PR), are Linux requirements.
+The utility described by this document is a Linux tool ([R-DELV-01](#R-DELV-01)), and its packaging requirements, [R-PACK-01](#R-PACK-01) through [R-PACK-07](#R-PACK-07), are Linux requirements.
 
-Looking to the future, the customary channels for more widespread distribution would be through the ports collections of the BSDs, Homebrew on macOS, and winget on Windows; the source tarball of [PACK-01-PR](#PACK-01-PR), which builds wherever the Rust toolchain and libpcap are available, will help make this possible.
+Looking to the future, the customary channels for more widespread distribution would be through the ports collections of the BSDs, Homebrew on macOS, and winget on Windows; the source tarball of [R-PACK-01](#R-PACK-01), which builds wherever the Rust toolchain and libpcap are available, will help make this possible.
 
 Nothing in this document forbids serving those channels early; it is simply not required.
 
 ### Future Proofing
 
-<a id="FPRO-01-PR"></a>
+<a id="R-FPRO-01"></a>
 
-#### FPRO-01-PR — Allow future features
+#### R-FPRO-01 — Allow future features
 
 > The design of the utility SHOULD NOT hinder the pursuit of features envisioned for future versions.
 
-Although this document defines the final product, the product may nonetheless evolve. Among the features that can be envisioned for future versions are: machine-readable output formats beyond those of [OFMT-01-PR](#OFMT-01-PR); richer multipath analyses; and use of the utility as a library or as a probing component by other systems, such as IP Routes Live (IPRL). This is a requirement only for awareness and thoughtfulness, not for detailed planning that would slow down the development of the product.
+Although this document defines the final product, the product may nonetheless evolve. Among the features that can be envisioned for future versions are: machine-readable output formats beyond those of [R-OFMT-01](#R-OFMT-01); richer multipath analyses; and use of the utility as a library or as a probing component by other systems, such as IP Routes Live (IPRL). This is a requirement only for awareness and thoughtfulness, not for detailed planning that would slow down the development of the product.
 
 ## References
 
@@ -613,21 +614,21 @@ This appendix records a verification, performed on 2026-06-11, of the claims tha
 | openSUSE | Tumbleweed (Factory) | 2.1.6 | api.opensuse.org |
 | Alpine Linux | edge | 2.1.6-r0 (community) | pkgs.alpinelinux.org |
 
-The verification supports the claims of the Background section and of [COMP-01-PR](#COMP-01-PR): every major distribution carries the reference implementation as its traceroute, and the most recent upstream release, 2.1.6 of 2024-09-13, is carried by the current releases of Debian, Ubuntu, Fedora, the RHEL 10 family, Arch Linux, openSUSE Tumbleweed, and Alpine Linux.
+The verification supports the claims of the Background section and of [R-COMP-01](#R-COMP-01): every major distribution carries the reference implementation as its traceroute, and the most recent upstream release, 2.1.6 of 2024-09-13, is carried by the current releases of Debian, Ubuntu, Fedora, the RHEL 10 family, Arch Linux, openSUSE Tumbleweed, and Alpine Linux.
 
 The 1: and 3: prefixes are packaging epochs, not upstream versions. RHEL does not expose its repositories publicly; its versions are verified through Rocky Linux, which rebuilds RHEL sources.
 
-Two nuances deserve note. First, long-term-support and enterprise releases lag upstream: Ubuntu 24.04 LTS and Gentoo’s stable tree carry 2.1.5, Debian 12 carries 2.1.2, and the RHEL 9 family carries 2.1.1, so the compatibility corpus of [DELV-04-PR](#DELV-04-PR) may encounter older reference behavior in the field. Second, in Ubuntu the package sits in the universe component rather than main, so it is present in the archive but not in a default installation.
+Two nuances deserve note. First, long-term-support and enterprise releases lag upstream: Ubuntu 24.04 LTS and Gentoo’s stable tree carry 2.1.5, Debian 12 carries 2.1.2, and the RHEL 9 family carries 2.1.1, so the compatibility corpus of [R-DELV-04](#R-DELV-04) may encounter older reference behavior in the field. Second, in Ubuntu the package sits in the universe component rather than main, so it is present in the archive but not in a default installation.
 
 ## Appendix B: Other Traceroute Implementations
 
 This appendix surveys the traceroute implementations other than the reference implementation.
 
-It distinguishes two groups. The first consists of the traceroutes that are deployed as components of operating systems: these define the environments in which the utility must coexist and, on the platforms beyond Linux to which future versions may be ported ([DELV-01-PR](#DELV-01-PR), [FPRO-01-PR](#FPRO-01-PR)), the native tools that it does not attempt to replace. The second consists of the traceroutes whose interest is historical or scientific: these define the lineage from which the utility descends and the research context in which it will be used.
+It distinguishes two groups. The first consists of the traceroutes that are deployed as components of operating systems: these define the environments in which the utility must coexist and, on the platforms beyond Linux to which future versions may be ported ([R-DELV-01](#R-DELV-01), [R-FPRO-01](#R-FPRO-01)), the native tools that it does not attempt to replace. The second consists of the traceroutes whose interest is historical or scientific: these define the lineage from which the utility descends and the research context in which it will be used.
 
 A pair of kindred diagnostic tools, in wide contemporary use without belonging to either group, follows; and a closing table records which of the four properties of the Motivation section each implementation provides. URLs are given in full so that they can be read in a printed version of this document.
 
-Where more than one implementation from the first table is installed on a Linux system, the alternatives mechanism of [PACK-05-PR](#PACK-05-PR) arbitrates the right to the name traceroute; Traceroute for Linux wins that arbitration by default wherever it is installed.
+Where more than one implementation from the first table is installed on a Linux system, the alternatives mechanism of [R-PACK-05](#R-PACK-05) arbitrates the right to the name traceroute; Traceroute for Linux wins that arbitration by default wherever it is installed.
 
 Appendix A records, distribution by distribution, the versions of the reference implementation carried.
 
@@ -635,7 +636,7 @@ Table B-1. Traceroutes deployed with operating systems
 
 | Implementation | Deployed where | Notes | URL |
 | --- | --- | --- | --- |
-| Traceroute for Linux | Every major Linux distribution, under the name traceroute | The reference implementation of this document ([COMP-01-PR](#COMP-01-PR)) | https://traceroute.sourceforge.net/ |
+| Traceroute for Linux | Every major Linux distribution, under the name traceroute | The reference implementation of this document ([R-COMP-01](#R-COMP-01)) | https://traceroute.sourceforge.net/ |
 | GNU inetutils traceroute | Debian family, as the package inetutils-traceroute | A simpler implementation; loses the default alternatives arbitration to Traceroute for Linux | https://www.gnu.org/software/inetutils/ |
 | BusyBox traceroute applet | Alpine Linux and embedded systems | Minimal; holds the name traceroute on Alpine until the full package is installed | https://www.busybox.net/ |
 | tracepath (iputils) | Most Linux systems | A related path-discovery tool, unprivileged; often present where no traceroute is installed | https://github.com/iputils/iputils |
@@ -648,10 +649,10 @@ Table B-2. Traceroutes of historical or scientific interest
 | Implementation | Interest | Notes | URL |
 | --- | --- | --- | --- |
 | Van Jacobson traceroute (1988) | Historical | The original traceroute, announced 1988-12-20; ancestor of the BSD and macOS implementations; see the provenance note following this table | https://ee.lbl.gov/ |
-| tcptraceroute | Historical | Pioneered TCP probing; its role is absorbed by the reference implementation’s wrapper ([COMP-05-PR](#COMP-05-PR)) | https://github.com/mct/tcptraceroute |
-| paris-traceroute and libparistraceroute | Historical and scientific | This project’s ancestors ([SOFT-04-PR](#SOFT-04-PR)); introduced the steady flow identifier of [SPTH-01-PR](#SPTH-01-PR); see the history note following this table | https://github.com/libparistraceroute |
+| tcptraceroute | Historical | Pioneered TCP probing; its role is absorbed by the reference implementation’s wrapper ([R-COMP-05](#R-COMP-05)) | https://github.com/mct/tcptraceroute |
+| paris-traceroute and libparistraceroute | Historical and scientific | This project’s ancestors ([R-SOFT-04](#R-SOFT-04)); introduced the steady flow identifier of [R-SPTH-01](#R-SPTH-01); see the history note following this table | https://github.com/libparistraceroute |
 | scamper | Scientific | CAIDA’s bulk measurement engine; implements MDA traceroute; defines the warts format | https://www.caida.org/catalog/software/scamper/ |
-| RIPE Atlas traceroute | Scientific | Runs on the probes of the RIPE NCC’s measurement platform; applies the Paris correction through its Paris ID mechanism; its JSON result format is a standard among researchers ([OFMT-01-PR](#OFMT-01-PR)) | https://atlas.ripe.net/ |
+| RIPE Atlas traceroute | Scientific | Runs on the probes of the RIPE NCC’s measurement platform; applies the Paris correction through its Paris ID mechanism; its JSON result format is a standard among researchers ([R-OFMT-01](#R-OFMT-01)) | https://atlas.ripe.net/ |
 | Pietrasanta traceroute | Scientific | Catchpoint’s ECMP-aware fork of Traceroute for Linux; the closest antecedent to this project (see Motivation) | https://github.com/catchpoint/Pietrasanta-traceroute |
 | Dublin Traceroute | Scientific | NAT-aware multipath tracerouting, building on the Paris traceroute techniques | https://dublin-traceroute.net/ |
 
@@ -666,7 +667,7 @@ Table B-4 closes the survey by returning to the four properties of the Motivatio
 
 Table B-4. Coverage of the four motivating properties
 
-| Implementation | Steady flow identifier (SPTH-01-PR) | MDA multipath tracing (MPTH-02-PR) | Command-line compatibility (COMP-02-PR) | Output compatibility (COMP-03-PR) |
+| Implementation | Steady flow identifier (R-SPTH-01) | MDA multipath tracing (R-MPTH-02) | Command-line compatibility (R-COMP-02) | Output compatibility (R-COMP-03) |
 | --- | --- | --- | --- | --- |
 | Traceroute for Linux | No | No | Yes: it is the reference implementation | Yes: it is the reference implementation |
 | paris-traceroute and libparistraceroute | Yes: introduced the correction | Yes | No | No |
@@ -674,4 +675,4 @@ Table B-4. Coverage of the four motivating properties
 | Dublin Traceroute | Yes | Partial: enumerates paths, without MDA’s statistical guarantees | No | No |
 | RIPE Atlas traceroute | Yes: its Paris ID mechanism | No | No: serves a measurement platform, not the command line | No: its own JSON format |
 | Pietrasanta traceroute | Partial: steadies the flow of its TCP probes | No | Yes | Yes |
-| the utility of this document | Required: [SPTH-01-PR](#SPTH-01-PR) | Required: [MPTH-02-PR](#MPTH-02-PR) | Required: [COMP-02-PR](#COMP-02-PR) | Required: [COMP-03-PR](#COMP-03-PR) |
+| the utility of this document | Required: [R-SPTH-01](#R-SPTH-01) | Required: [R-MPTH-02](#R-MPTH-02) | Required: [R-COMP-02](#R-COMP-02) | Required: [R-COMP-03](#R-COMP-03) |
