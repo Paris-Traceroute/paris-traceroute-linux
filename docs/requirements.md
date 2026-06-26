@@ -59,7 +59,7 @@ Simply changing the header fields would allow traceroute to avoid single-path er
 
 Rather than attempt an MDA implementation in C, the language used for Traceroute for Linux, the Dioptra Group at the LIP6 laboratory of Sorbonne University has written one in Rust, which is more readable and guarantees memory safety. This is embodied in Voyage &#91;[Lohrer 2024](#ref-lohrer-2024)&#93;, a traceroute tool built on modular components: the caracat probing library and the pantrace format-conversion library. This document refers to these three components together as the implementation basis.
 
-Paris Traceroute for Linux will be built by adapting Voyage and its supporting libraries. The requirements for that tool are specified in the sections that follow.
+Paris Traceroute for Linux will be built by adapting Voyage and its supporting libraries. The requirements for doing so are specified in the sections that follow.
 
 ## Motivation
 
