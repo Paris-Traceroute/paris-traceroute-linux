@@ -12,13 +12,13 @@ use netdev::get_default_interface;
 use pantrace::formats::atlas::AtlasWriter;
 use pantrace::formats::internal::{Protocol, Traceroute};
 use pantrace::traits::TracerouteWriter;
-use voyage::algorithms::diamond_miner::DiamondMiner;
-use voyage::classic_traceroute::ClassicTracerouteWriter;
-use voyage::pantrace_builder::replies_to_pantrace_flows;
+use paris_traceroute_linux::algorithms::diamond_miner::DiamondMiner;
+use paris_traceroute_linux::classic_traceroute::ClassicTracerouteWriter;
+use paris_traceroute_linux::pantrace_builder::replies_to_pantrace_flows;
 
 use anyhow::Result;
-use voyage::probe::probe;
-use voyage::types::{Link, TTL};
+use paris_traceroute_linux::probe::probe;
+use paris_traceroute_linux::types::{Link, TTL};
 
 use clap::{Parser, ValueEnum};
 
