@@ -16,7 +16,7 @@ Iris, MetaTrace, and Scamper Warts (binary). The tool is designed to be
 efficient and configurable, allowing users to specify various parameters such as
 TTL range, ports, confidence level, and probing rate.
 
-> :warning: This is a research project and is still under development. Use it at your own risk.
+> :warning: This is pre-release code, not yet ready to be used.
 
 ## Table of Contents
 
